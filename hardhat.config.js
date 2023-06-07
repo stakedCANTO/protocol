@@ -27,7 +27,7 @@ module.exports = {
   networks: {
     hardhat: {},
     canto: {
-      url: `https://canto.slingshot.finance`,
+      url: `https://velocimeter.tr.zone`,
       chainId: 7700,
     },
   },

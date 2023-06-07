@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 
 import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import {ITurnstile} from "./ITurnstile.sol";
+import {ITurnstile} from "./interfaces/ITurnstile.sol";
 
 /// @title Staked Canto Governance Token
 ///
@@ -39,7 +39,10 @@ contract BLOTRToken is AccessControlUpgradeable, ERC20Upgradeable {
     /// @dev initializer to be called once after deployment
     ///
     /// @param _adminAddress address of contract admin who controls permissions
-    function initialize(address _adminAddress, address _turnstile) external initializer {
+    function initialize(
+        address _adminAddress,
+        address _turnstile
+    ) external initializer {
         AccessControlUpgradeable.__AccessControl_init();
         ERC20Upgradeable.__ERC20_init("sCANTO BLOTR", "BLOTR");
         _setupRole(ADMIN_ROLE, _adminAddress);

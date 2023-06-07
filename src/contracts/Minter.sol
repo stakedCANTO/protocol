@@ -3,18 +3,18 @@ pragma solidity 0.8.17;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {StakedCanto} from "./StakedCanto.sol";
-import {ITurnstile} from "./ITurnstile.sol";
+import {ITurnstile} from "./interfaces/ITurnstile.sol";
 
 contract Minter is Ownable {
     StakedCanto public immutable sCANTO;
     address payable public treasury;
 
     uint256 public initialExchangeRate = 1 ether; // initial cost in CANTO of minting 1 sCANTO
-    uint256 public yield; // yield represented in miliBasisPoints (10_000_000 = 1%) per ~year (leap years ignored)
+    uint256 public yield; // yield represented in miliBasisPoints (1_000_000 = 10%) per ~year (leap years ignored)
     uint256 public accumulatedYield; // accumulated yield since last update
     uint256 public lastUpdated; // timestamp representing the timestamp that the accumulatedYield was last updated
 
-    uint256 public constant MILI_BASIS_POINTS = 10_000_000; // 128_000_000 = 12.8%
+    uint256 public constant MILI_BASIS_POINTS = 10_000_000; // 1_280_000 = 12.8%
     uint256 public constant YEAR = 60 * 60 * 24 * 365; // second per year (ignore leap years)
 
     ITurnstile turnstile;
@@ -52,7 +52,7 @@ contract Minter is Ownable {
     }
 
     /// Sets the desired yield from the owner of this contract
-    /// @param _newYield desired yield to be set in MILI_BASIS_POINTS (10_000_000 = 1%)
+    /// @param _newYield desired yield to be set in MILI_BASIS_POINTS (1_000_000 = 10%)
     function setYield(uint256 _newYield) external onlyOwner {
         uint256 timeElapsed = block.timestamp - lastUpdated;
         // prior to setting the new yield, we need to "accumulate" our past yield
@@ -108,6 +108,6 @@ contract Minter is Ownable {
     /// CANTO sent directly to this contract will mint sCANTO without concern
     /// for the minimum.
     receive() external payable {
-        mint(msg.sender, 0); 
+        mint(msg.sender, 0);
     }
 }
